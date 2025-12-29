@@ -35,7 +35,6 @@ public class App extends Application {
 		Scene scene = new Scene(panelR.region(), 654, 960);
 		scene.getStylesheets().setAll(Resources.stylesheetURL);
 		
-		primaryStage.getIcons().setAll(Resources.iconsApplication());
 		primaryStage.setScene(scene);
 
 		
@@ -53,5 +52,9 @@ public class App extends Application {
 
 		primaryStage.sizeToScene();
 		primaryStage.show();
+	}
+
+	public static void main(){
+		Application.launch(App.class);
 	}
 }

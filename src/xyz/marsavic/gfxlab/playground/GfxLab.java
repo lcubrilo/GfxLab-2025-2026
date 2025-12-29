@@ -35,9 +35,10 @@ public class GfxLab {
 //						new ScanLine()            , new TransformationsFromSize.ToIdentity (size)
 //						new GammaTest()           , new TransformationsFromSize.ToIdentity (size)
 //						new Spirals()             , new TransformationsFromSize.ToGeometric(size)
-						new Blobs(5, 0.1, 0.2)    , new TransformationsFromSize.ToGeometric(size)
+						// new Blobs(5, 0.1, 0.2)    , new TransformationsFromSize.ToGeometric(size)
 //						new Wavy()                , new TransformationsFromSize.ToGeometric(size)
-				),
+						new Domaci1()              , new TransformationsFromSize.ToIdentity(size)					
+),
 				size,
 				new Hash(0x34EDE7F200EA9AD7L)
 		);
