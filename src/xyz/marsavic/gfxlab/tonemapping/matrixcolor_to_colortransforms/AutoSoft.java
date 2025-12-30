@@ -42,9 +42,9 @@ public class AutoSoft implements F1<ColorTransform, Array2<Color>> {
 		double postFactor_;
 		
 		if (autoPostFactor) {
-			double[] maxY = new double[size.xInt()];
+			double[] maxY = new double[size.yInt()];
 			
-			UtilsGL.parallelY(size, y -> {
+			UtilsGL.parallel.parallelY(size, y -> {
 				maxY[y] = Double.NEGATIVE_INFINITY;
 				for (int x = 0; x < size.xInt(); x++) {
 					Color c = colorArray2.at(x, y);

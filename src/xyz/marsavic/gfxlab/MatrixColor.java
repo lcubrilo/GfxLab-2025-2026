@@ -46,7 +46,7 @@ public class MatrixColor implements Matrix<Color> {
 	
 	
 	public void fillBlack() {
-		UtilsGL.parallelY(size, y -> {
+		UtilsGL.parallel.parallelY(size, y -> {
 			int w = data[y].length;
 			for (int x = 0; x < w; x++) {
 				data[y][x][0] = 0;
@@ -64,7 +64,7 @@ public class MatrixColor implements Matrix<Color> {
 		Vector size = Array2.assertEqualSizes(a, result);
 		
 		int sizeX = size.xInt();
-		UtilsGL.parallelY(size, y -> {
+		UtilsGL.parallel.parallelY(size, y -> {
 			for (int x = 0; x < sizeX; x++) {
 				result.set(x, y, a.at(x, y).add(b.at(x, y)));
 			}
@@ -84,7 +84,7 @@ public class MatrixColor implements Matrix<Color> {
 		Vector size = Array2.assertEqualSizes(toChange, byHowMuch);
 		
 		int sizeX = size.xInt();
-		UtilsGL.parallelY(size, y -> {
+		UtilsGL.parallel.parallelY(size, y -> {
 			for (int x = 0; x < sizeX; x++) {
 				toChange.set(x, y, toChange.at(x, y).add(byHowMuch.at(x, y)));
 			}
@@ -96,7 +96,7 @@ public class MatrixColor implements Matrix<Color> {
 		Vector size = Array2.assertEqualSizes(a, result);
 		
 		int sizeX = size.xInt();
-		UtilsGL.parallelY(size, y -> {
+		UtilsGL.parallel.parallelY(size, y -> {
 			for (int x = 0; x < sizeX; x++) {
 				result.set(x, y, a.at(x, y).mul(k));
 			}
@@ -115,7 +115,7 @@ public class MatrixColor implements Matrix<Color> {
 		Vector size = toChange.size();
 		
 		int sizeX = size.xInt();
-		UtilsGL.parallelY(size, y -> {
+		UtilsGL.parallel.parallelY(size, y -> {
 			for (int x = 0; x < sizeX; x++) {
 				toChange.set(x, y, toChange.at(x, y).mul(factor));
 			}

@@ -2,14 +2,13 @@ package xyz.marsavic.gfxlab.playground.colorfunctions;
 
 import xyz.marsavic.geometry.Vector;
 import xyz.marsavic.gfxlab.Color;
-import xyz.marsavic.gfxlab.ColorFunctionT;
-import xyz.marsavic.elements.Element;
+import xyz.marsavic.gfxlab.ColorFunction3;
 
-public class ColorFunctionExample implements ColorFunctionT {
+public class ColorFunction3Example implements ColorFunction3 {
 	
 	@Override
 	public Color at(double t, Vector p) {
-		return Color.rgb(p.x(), 1 - p.x(), 0);
+		return Color.rgb(p.x(), 1 - p.x(), 0 );
 	}
 	
 }

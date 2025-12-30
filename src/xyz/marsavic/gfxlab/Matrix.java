@@ -19,7 +19,7 @@ public interface Matrix<E> extends Array2<E> {
 	
 	default void fill(E value) {
 		int sizeX = size().xInt();
-		UtilsGL.parallelY(size(), y -> {
+		UtilsGL.parallel.parallelY(size(), y -> {
 			for (int x = 0; x < sizeX; x++) {
 				set(x, y, value);
 			}
@@ -31,7 +31,7 @@ public interface Matrix<E> extends Array2<E> {
 	
 	default void fill(F1<E, Vector> f) {
 		int sizeX = size().xInt();
-		UtilsGL.parallelY(size(), y -> {
+		UtilsGL.parallel.parallelY(size(), y -> {
 			for (int x = 0; x < sizeX; x++) {
 				set(x, y, f.at(Vector.xy(x, y)));
 			}
@@ -43,7 +43,7 @@ public interface Matrix<E> extends Array2<E> {
 
 	default void fill(F2<E, Integer, Integer> f) {
 		int sizeX = size().xInt();
-		UtilsGL.parallelY(size(), y -> {
+		UtilsGL.parallel.parallelY(size(), y -> {
 			for (int x = 0; x < sizeX; x++) {
 				set(x, y, f.at(x, y));
 			}
@@ -57,7 +57,7 @@ public interface Matrix<E> extends Array2<E> {
 		Vector size = Array2.assertEqualSizes(this, o);
 		
 		int sizeX = size.xInt();
-		UtilsGL.parallelY(size, y -> {
+		UtilsGL.parallel.parallelY(size, y -> {
 			for (int x = 0; x < sizeX; x++) {
 				set(x, y, o.at(x, y));
 			}

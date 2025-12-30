@@ -2,12 +2,12 @@ package xyz.marsavic.gfxlab.playground.colorfunctions;
 
 import xyz.marsavic.geometry.Vector;
 import xyz.marsavic.gfxlab.Color;
-import xyz.marsavic.gfxlab.ColorFunctionT;
+import xyz.marsavic.gfxlab.ColorFunction3;
 import xyz.marsavic.gfxlab.MatrixInts;
 import xyz.marsavic.utils.Hash;
 
 
-public class HashTest implements ColorFunctionT {
+public class HashTest implements ColorFunction3 {
 	
 	private final MatrixInts c;
 	

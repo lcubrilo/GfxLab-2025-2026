@@ -62,7 +62,7 @@ public final class MatrixInts implements Matrix<Integer> {
 			});
 */
 		} else {
-			UtilsGL.parallel(height, y -> {
+			UtilsGL.parallel.parallel(height, y -> {
 				int o = y * width;
 				for (int x = 0; x < width; x++) {
 					data[o++] = source.at(x, y);

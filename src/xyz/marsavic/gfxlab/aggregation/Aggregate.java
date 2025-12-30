@@ -2,7 +2,7 @@ package xyz.marsavic.gfxlab.aggregation;
 
 import xyz.marsavic.geometry.Vector;
 import xyz.marsavic.gfxlab.Color;
-import xyz.marsavic.gfxlab.ColorFunction;
+import xyz.marsavic.gfxlab.ColorFunction3;
 import xyz.marsavic.gfxlab.Matrix;
 import xyz.marsavic.gfxlab.MatrixColor;
 import xyz.marsavic.gfxlab.gui.UtilsGL;
@@ -13,8 +13,8 @@ import xyz.marsavic.utils.Utils;
 import java.util.SplittableRandom;
 
 
-class Aggregate {
-	private final ColorFunction colorFunction;
+public class Aggregate {
+	private final ColorFunction3 colorFunction3;
 	private final double t;
 	private final Vector size;
 	private final Hash hash;
@@ -36,7 +36,7 @@ class Aggregate {
 		
 		private synchronized Rr<Matrix<Color>> avg() {
 			if (count == 0) {
-				throw new IllegalStateException("No samples can not compute average.");
+				throw new IllegalStateException("No samples. Cannot compute average.");
 			}
 			return rSum.f(sum -> {
 				Rr<Matrix<Color>> rAvg = UtilsGL.matricesColor.obtain(sum.size(), true);
@@ -51,14 +51,14 @@ class Aggregate {
 	
 	
 
-	public Aggregate(ColorFunction colorFunction, double t, Vector size, Hash hash) {
+	public Aggregate(ColorFunction3 colorFunction3, double t, Vector size, Hash hash) {
 		// TODO add a boolean parameter stating whether to immediately do the first sample.
 		//  If so, then optimize by sending the first sample straight into the sum matrix
 		//  (instead of making a zero matrix, computing the sample, and them adding them together).
-		this.colorFunction = colorFunction;
+		this.colorFunction3 = colorFunction3;
 		this.t = t;
 		this.size = size;
-		this.hash = hash;
+		this.hash = hash.add(t);
 		state = new State(0, null);
 	}
 	
@@ -94,19 +94,19 @@ class Aggregate {
 		int sizeX = size.xInt();
 		stateNew.rSum.a(mSumNew -> {
 			if (stateOld.count == 0) {                // For optimization only, no other reason to consider this case separately.
-				UtilsGL.parallelY(size, y -> {
+				UtilsGL.parallel.parallelY(size, y -> {
 					SplittableRandom rng = new SplittableRandom(hashFrame.add(y).get());
 					for (int x = 0; x < sizeX; x++) {
-						Color c = colorFunction.at(t + rng.nextDouble(), Vector.xy(x + rng.nextDouble(), y + rng.nextDouble()));
+						Color c = colorFunction3.at(t + rng.nextDouble(), Vector.xy(x + rng.nextDouble(), y + rng.nextDouble()));
 						mSumNew.set(x, y, c);
 					}
 				});
 			} else {
 				stateOld.rSum.a(mSumOld -> {
-					UtilsGL.parallelY(size, y -> {
+					UtilsGL.parallel.parallelY(size, y -> {
 						SplittableRandom rng = new SplittableRandom(hashFrame.add(y).get());
 						for (int x = 0; x < sizeX; x++) {
-							Color c = colorFunction.at(t + rng.nextDouble(), Vector.xy(x + rng.nextDouble(), y + rng.nextDouble()));
+							Color c = colorFunction3.at(t + rng.nextDouble(), Vector.xy(x + rng.nextDouble(), y + rng.nextDouble()));
 							mSumNew.set(x, y, mSumOld.at(x, y).add(c));
 						}
 					});

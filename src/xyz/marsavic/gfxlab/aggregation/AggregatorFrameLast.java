@@ -1,9 +1,8 @@
 package xyz.marsavic.gfxlab.aggregation;
 
 import xyz.marsavic.functions.A0;
-import xyz.marsavic.geometry.Vector;
 import xyz.marsavic.gfxlab.Color;
-import xyz.marsavic.gfxlab.ColorFunction;
+import xyz.marsavic.gfxlab.ColorFunction3;
 import xyz.marsavic.gfxlab.Matrix;
 import xyz.marsavic.gfxlab.Vec3;
 import xyz.marsavic.gfxlab.gui.UtilsGL;
@@ -11,16 +10,10 @@ import xyz.marsavic.resources.Rr;
 import xyz.marsavic.time.Profiler;
 import xyz.marsavic.utils.Hash;
 import xyz.marsavic.utils.OnGC;
-import xyz.marsavic.utils.Utils;
+import xyz.marsavic.utils.Parallel;
 
 
 public class AggregatorFrameLast extends Aggregator {
-	
-	private final ColorFunction colorFunction;
-	private final int nFrames;
-	private final Vector sizeFrame;
-	private final Hash hash;
-	
 	
 	private record IFrameAggregate(int iFrame, Aggregate aggregate) {}
 	
@@ -30,26 +23,19 @@ public class AggregatorFrameLast extends Aggregator {
 	
 	
 	
-	public AggregatorFrameLast(ColorFunction colorFunction, Vec3 size) {
-		this(colorFunction, size, new Hash(0xCDB339C21CAC7A7CL));
-	}
-	
-	public AggregatorFrameLast(ColorFunction colorFunction, Vec3 size, Hash hash) {
-		this.colorFunction = colorFunction;
-		nFrames = (int) size.x();
-		sizeFrame = size.p12();
-		this.hash = hash;
+	public AggregatorFrameLast(ColorFunction3 colorFunction3, Vec3 size, boolean repeats, boolean motionBlur, Hash hash) {
+		super(colorFunction3, size, repeats, motionBlur, hash);
 		
 		changeActiveAggregate(0);
 		
-		aStopLoop = Utils.daemonLoop(this::addSample);
+		aStopLoop = Parallel.daemonLoop(this::addSample);
 		OnGC.setOnGC(this, aStopLoop);
 	}
 	
 	
-	private synchronized IFrameAggregate changeActiveAggregate(int iFrame_) {
+	private synchronized IFrameAggregate changeActiveAggregate(int iFrame) {
 		IFrameAggregate iFrameAggregateLastOld = iFrameAggregateLast;
-		iFrameAggregateLast = new IFrameAggregate(iFrame_, new Aggregate(colorFunction, iFrame_, sizeFrame, hash.add(iFrame_)));
+		iFrameAggregateLast = new IFrameAggregate(iFrame, createAggregate(iFrame));
 		
 		if (iFrameAggregateLastOld != null) {
 			iFrameAggregateLastOld.aggregate.release();
@@ -61,13 +47,11 @@ public class AggregatorFrameLast extends Aggregator {
 	
 	@Override
 	public Rr<Matrix<Color>> rFrame(int iFrame) {
-		int iFrame_ = Math.floorMod(iFrame, nFrames);
-		
 		IFrameAggregate iFrameAggregate;
 		synchronized (this) {
-			iFrameAggregate = (iFrame_ == iFrameAggregateLast.iFrame) ?
+			iFrameAggregate = (iFrame == iFrameAggregateLast.iFrame) ?
 					iFrameAggregateLast :
-					changeActiveAggregate(iFrame_);
+					changeActiveAggregate(iFrame);
 		}
 		
 		return iFrameAggregate.aggregate.avgAtLeastOne();
@@ -85,7 +69,7 @@ public class AggregatorFrameLast extends Aggregator {
 	
 	@Override
 	public synchronized void release() {
-		aStopLoop.execute();
+		aStopLoop.at();
 		iFrameAggregateLast.aggregate.release();
 	}
 }

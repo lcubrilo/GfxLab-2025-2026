@@ -1,7 +1,6 @@
 open module xyz.marsavic.GfxLab {
 	
 	requires xyz.marsavic.MarsBits.main;
-	requires xyz.marsavic.objectinstruments;
 	
 	requires javafx.controls;
 	requires javafx.graphics;

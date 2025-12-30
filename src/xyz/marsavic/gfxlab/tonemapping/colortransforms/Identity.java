@@ -1,7 +1,7 @@
 package xyz.marsavic.gfxlab.tonemapping.colortransforms;
 
 import xyz.marsavic.gfxlab.Color;
-import xyz.marsavic.elements.Immutable;
+import xyz.marsavic.reactions.elements.Immutable;
 import xyz.marsavic.gfxlab.tonemapping.ColorTransform;
 
 

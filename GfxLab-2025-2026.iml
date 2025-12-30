@@ -11,5 +11,6 @@
     <orderEntry type="library" name="caffeine-3.1.1" level="project" />
     <orderEntry type="library" name="mars-bits-2025-12-08" level="project" />
     <orderEntry type="library" name="object-instruments-2025-12-08" level="project" />
+    <orderEntry type="library" name="mars-bits-2025-12-29" level="project" />
   </component>
 </module>

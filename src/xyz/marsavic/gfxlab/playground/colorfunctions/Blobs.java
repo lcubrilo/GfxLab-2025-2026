@@ -1,10 +1,9 @@
 package xyz.marsavic.gfxlab.playground.colorfunctions;
 
-import xyz.marsavic.elements.Immutable;
 import xyz.marsavic.geometry.Box;
 import xyz.marsavic.geometry.Vector;
 import xyz.marsavic.gfxlab.Color;
-import xyz.marsavic.gfxlab.ColorFunctionT;
+import xyz.marsavic.gfxlab.ColorFunction3;
 import xyz.marsavic.random.sampling.Sampler;
 import xyz.marsavic.utils.Defaults;
 import xyz.marsavic.utils.Hash;
@@ -12,8 +11,7 @@ import xyz.marsavic.utils.Hash;
 import static xyz.marsavic.utils.Numeric.*;
 
 
-@Immutable
-public class Blobs implements ColorFunctionT {
+public class Blobs implements ColorFunction3 {
 
 	private final int n;
 	private final double m;
@@ -24,9 +22,9 @@ public class Blobs implements ColorFunctionT {
 
 	
 	
-	public static final Defaults<Blobs> $ = Defaults.args(5, 0.1, 0.2);
+//	public static final Defaults<Blobs> $ = Defaults.args(5, 0.1, 0.2);
 
-	public Blobs(int n, double m, double threshold) {
+	public Blobs(int n, double m, double threshold, Hash hash) {
 		this.n = n;
 		this.m = m;
 		this.threshold = threshold;
@@ -34,7 +32,7 @@ public class Blobs implements ColorFunctionT {
 		o = new Vector[n];
 		c = new Vector[n];
 		
-		Sampler sampler = new Sampler(new Hash(0xB182847F9F621EB1L));
+		Sampler sampler = new Sampler(hash);
 		for (int i = 0; i < n; i++) {
 			o[i] = sampler.randomInBox(Box.cr(10)).round();
 			c[i] = sampler.randomInBox();

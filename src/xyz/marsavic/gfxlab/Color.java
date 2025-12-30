@@ -54,7 +54,7 @@ public class Color {
 			case 3 -> Color.rgb(p, q, b);
 			case 4 -> Color.rgb(t, p, b);
 			case 5 -> Color.rgb(b, p, q);
-			default -> null;
+			default -> throw new RuntimeException("Can't happen");
 		};
 	}
 	

@@ -47,7 +47,7 @@ public class MatrixObject<E> implements Matrix<E> {
 	
 	@Override
 	public void fill(E value) {
-		UtilsGL.parallel(data.length, y -> Arrays.fill(data[y], value));
+		UtilsGL.parallel.parallel(data.length, y -> Arrays.fill(data[y], value));
 	}
 	
 }
